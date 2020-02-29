@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  api:
+    build: 
+      context: ./back_end
+      target: dev
+    stdin_open: true
+    tty: true
+    # ports:
+    #  - 1998:1998
+    # volumes:
+    #   - ./:/go/src
