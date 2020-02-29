@@ -7,7 +7,9 @@ services:
       target: dev
     stdin_open: true
     tty: true
-    # ports:
-    #  - 1998:1998
-    # volumes:
-    #   - ./:/go/src
+    ports:
+      - 1998:1998
+    volumes:
+      - ./back_end/go.mod:/app/go.mod
+      - ./back_end/server.go:/app/server.go
+      - ./back_end/api/:/app/api
