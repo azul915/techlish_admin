@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"techlish/api/word"
+	"github.com/azul915/techlish_admin/back_end/api"
 )
 
 func main() {
-	str := word.AddWord()
-	fmt.Println(str)
+	fmt.Println("Test")
+	word := word.AddWord()
+	fmt.Println(word)
 }
