@@ -32,6 +32,7 @@ COPY go.sum .
 COPY ./api ./api
 COPY server.go .
 COPY credentials.json .
+COPY token.json .
 COPY .realize.yaml .
 
 RUN set -ex && \
@@ -39,6 +40,9 @@ RUN set -ex && \
     apk add --no-cache git && \
     : "for realize hot reloader" && \
     go get github.com/oxequa/realize
+    # : "for google sheets API" && \
+    # go get -u google.golang.org/api/sheets/v4 && \
+    # go get -u golang.org/x/oauth2/google
 
 EXPOSE 1998
-#CMD [ "realize", "start" ]
+CMD [ "realize", "start" ]
