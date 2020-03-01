@@ -28,8 +28,10 @@ FROM golang:1.13.8-alpine as dev
 WORKDIR /app
 ENV GO111MODULE=on
 COPY go.mod .
+COPY go.sum .
 COPY ./api ./api
 COPY server.go .
+COPY credentials.json .
 COPY .realize.yaml .
 
 RUN set -ex && \
@@ -39,4 +41,4 @@ RUN set -ex && \
     go get github.com/oxequa/realize
 
 EXPOSE 1998
-CMD [ "realize", "start" ]
+#CMD [ "realize", "start" ]
