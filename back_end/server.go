@@ -7,11 +7,12 @@ import (
 	"log"
 	"net/http"
 	"os"
+	_"strconv"
 
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
-	//"google.golang.org/api/sheets/v4"
+	"google.golang.org/api/sheets/v4"
 
 	"github.com/azul915/techlish_admin/back_end/api"
 )
@@ -20,7 +21,7 @@ func saveToken(path string, token *oauth2.Token) {
 	fmt.Printf("Saving credential file to: %s\n", path)
 	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
 	if err != nil {
-			log.Fatalf("Unable to cache oauth token: %v", err)
+		log.Fatalf("Unable to cache oauth token: %v", err)
 	}
 	defer f.Close()
 	json.NewEncoder(f).Encode(token)
@@ -110,10 +111,16 @@ func handleAddVocabulary(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//fmt.Println(word[0])
-
-	ok := vocabulary.AddVocabulary()
-	fmt.Println(ok)
+	// TODO: コンテナに入って[go get -u google.golang.org/api/sheets/v4]
+	// TODO: コンテナに入って[go get -u golang.org/x/oauth2/google]
+	// TODO: ParamsをAddVocabularyに渡して、SpreadSheeetを更新する
+	// TODO: SpreadSheetのinitを別ファイル定義して呼び出す
+	vocabulary.AddVocabulary(&vocabulary.Vocabulary{
+		Word: WordSlice[0],
+		Category: categorySlice[0],
+		Mean: meanSlice[0],
+		Any: params["any"][0]
+	})
 }
 
 func handleRequests() {
@@ -125,10 +132,48 @@ func handleRequests() {
 
 func main() {
 	
-	//client, err := spreadsheetInit()
-	// if err != nil {
-	// 	log.Fatalf("Failure: %v", err)
-	// }
+	client, err := spreadsheetInit()
+	if err != nil {
+		log.Fatalf("Failure: %v", err)
+	}
+
+	srv, err := sheets.New(client)
+	if err != nil {
+		log.Fatalf("Unable to retrieve Sheets client: %v", err)
+	}
+
+	spreadsheetId := "1J3nzfzaUj0Qu8T95R_oz_xpbotrW60pIlP4nI8Ny5Qw"
+	readRange := "シート1!A:A"
+	resp, err := srv.Spreadsheets.Values.Get(spreadsheetId, readRange).Do()
+	if err != nil {
+		log.Fatalf("Unable to retrieve data from sheet: %v", err)
+	}
+
+	if len(resp.Values) == 0 {
+
+		fmt.Println("No data found.")
+
+	} else {
+
+		newIdx := len(resp.Values) + 1
+		writeRange := "シート1!A" + strconv.Itoa(newIdx)
+		valueRange := &sheets.ValueRange{
+			Values: [][]interface{}{
+				[]interface{}{"blue", "名", "青", "補足", "1999/09/15 0:00:00"},
+			},
+		}
+
+		_, err = srv.Spreadsheets
+					.Values
+					.Update(spreadsheetId, writeRange, valueRange)
+					.ValueInputOption("RAW")
+					.Do()
+
+		if err != nil {
+			log.Fatalf("Unable to retrieve data from sheet. %v", err)
+		}
+	}
+
 	handleRequests()
 
 }

@@ -1,6 +1,7 @@
 package vocabulary
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -12,6 +13,9 @@ type Vocabulary struct {
 	CreatedAt time.Time
 }
 
-func AddVocabulary() string {
-	return "ok"
+func AddVocabulary(v *Vocabulary) {
+	fmt.Println(v.Word)
+	fmt.Println(v.Category)
+	fmt.Println(v.Mean)
+
 }
