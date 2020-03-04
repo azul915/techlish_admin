@@ -2,10 +2,10 @@ package vocabulary
 
 import (
 	"fmt"
-	"time"
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	"google.golang.org/api/sheets/v4"
 )
@@ -19,12 +19,12 @@ type Vocabulary struct {
 }
 
 type Response struct {
-	Code      int
-	Message   string
+	Code    int
+	Message string
 }
 
-func AddVocabulary(v *Vocabulary) (int, interface{}, error){
-	
+func AddVocabulary(v *Vocabulary) (int, interface{}, error) {
+
 	client, err := SpreadsheetInit()
 	if err != nil {
 		log.Fatalf("Failure: %v", err)
@@ -55,10 +55,10 @@ func AddVocabulary(v *Vocabulary) (int, interface{}, error){
 		}
 
 		_, err = sheetService.Spreadsheets.
-					Values.
-					Update(spreadsheetId, writeRange, valueRange).
-					ValueInputOption("RAW").
-					Do()
+			Values.
+			Update(spreadsheetId, writeRange, valueRange).
+			ValueInputOption("RAW").
+			Do()
 
 		if err != nil {
 			log.Fatalf("Unable to retrieve data from sheet. %v", err)

@@ -1,7 +1,6 @@
 package main
 
 import (
-
 	"log"
 	"net/http"
 
@@ -40,14 +39,14 @@ func handleAddVocabulary(w http.ResponseWriter, r *http.Request) {
 	}
 
 	voc := vocabulary.Vocabulary{
-		Word: wordSlice[0],
+		Word:     wordSlice[0],
 		Category: categorySlice[0],
-		Mean: meanSlice[0],
-		Any: params["any"][0],
+		Mean:     meanSlice[0],
+		Any:      params["any"][0],
 	}
 
 	statusCode, res, err := vocabulary.AddVocabulary(&voc)
-	
+
 }
 
 func handleRequests() {
