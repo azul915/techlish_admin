@@ -1,2 +1,7 @@
 credentials.json
 token.json
+.idea/.gitignore
+.idea/misc.xml
+.idea/modules.xml
+.idea/techlish_admin.iml
+.idea/vcs.xml

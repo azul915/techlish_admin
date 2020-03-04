@@ -39,10 +39,7 @@ RUN set -ex && \
     apk update && \
     apk add --no-cache git && \
     : "for realize hot reloader" && \
-    go get github.com/oxequa/realize && \
-    : "for google sheets API" && \
-    go get -u google.golang.org/api/sheets/v4 && \
-    go get -u golang.org/x/oauth2/google
+    go get -u github.com/yyh-gl/realize
 
 EXPOSE 1998
 CMD [ "realize", "start" ]
