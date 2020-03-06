@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+
+	vocabulary "github.com/azul915/techlish_admin/back_end/api"
 )
 
 func handleAddVocabulary(w http.ResponseWriter, r *http.Request) {
@@ -14,37 +16,38 @@ func handleAddVocabulary(w http.ResponseWriter, r *http.Request) {
 	}
 
 	r.ParseForm()
-	params := r.Form
 
-	wordSlice := params["word"]
-	if wordSlice == nil {
+	ws := r.Form["word"]
+	if ws == nil {
 		w.WriteHeader(http.StatusBadRequest)
 		log.Println("BadRequest: parameter[word] is empty")
 		return
 	}
 
-	categorySlice := params["category"]
-	if categorySlice == nil {
+	cs := r.Form["category"]
+	if cs == nil {
 		w.WriteHeader(http.StatusBadRequest)
 		log.Println("BadRequest: parameter[category] is empty")
 		return
 	}
 
-	meanSlice := params["mean"]
-	if meanSlice == nil {
+	ms := r.Form["mean"]
+	if ms == nil {
 		w.WriteHeader(http.StatusBadRequest)
-		log.Println("BadRequest: parameter[mean] is emtpy")
+		log.Println("BadRequest: parameter[mean] is empty")
 		return
 	}
 
+	as := r.Form["any"]
+
 	voc := vocabulary.Vocabulary{
-		Word:     wordSlice[0],
-		Category: categorySlice[0],
-		Mean:     meanSlice[0],
-		Any:      params["any"][0],
+		Word:     ws[0],
+		Category: cs[0],
+		Mean:     ms[0],
+		Any:      as[0],
 	}
 
-	statusCode, res, err := vocabulary.AddVocabulary(&voc)
+	_, res, err := vocabulary.AddVocabulary(&voc)
 	json, err := json.Marshal(res)
 	if err != nil {
 		return

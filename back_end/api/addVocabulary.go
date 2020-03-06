@@ -19,8 +19,8 @@ type Vocabulary struct {
 }
 
 type Response struct {
-	Code    int
-	Message string
+	Code    int    `json:"code"`
+	Message string `json:"message"`
 }
 
 func AddVocabulary(v *Vocabulary) (int, interface{}, error) {
