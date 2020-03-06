@@ -1,10 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
-
-	"github.com/azul915/techlish_admin/back_end/api"
 )
 
 func handleAddVocabulary(w http.ResponseWriter, r *http.Request) {
@@ -46,7 +45,12 @@ func handleAddVocabulary(w http.ResponseWriter, r *http.Request) {
 	}
 
 	statusCode, res, err := vocabulary.AddVocabulary(&voc)
-
+	json, err := json.Marshal(res)
+	if err != nil {
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(json)
 }
 
 func handleRequests() {
