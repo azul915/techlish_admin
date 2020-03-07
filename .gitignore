@@ -5,3 +5,4 @@ token.json
 .idea/modules.xml
 .idea/techlish_admin.iml
 .idea/vcs.xml
+node_modules

@@ -13,3 +13,12 @@ services:
       - ./back_end/go.mod:/app/go.mod
       - ./back_end/server.go:/app/server.go
       - ./back_end/api/:/app/api
+  # ui:
+  #   image: node:13.8.0
+  #   stdin_open: true
+  #   tty : true
+  #   ports:
+  #     - 1997:1997
+  #   volumes: 
+  #     - ./front_end/ui/:/usr/src/ui
+  #   working_dir: /usr/src/ui
