@@ -1,4 +1,5 @@
 import React from "react";
+import { config } from "./config";
 import axios from "axios";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Grid, TextField, MenuItem, Button, Paper } from "@material-ui/core";
@@ -25,25 +26,6 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
-
-const categories = [
-  {
-    value: "名",
-    label: "名詞"
-  },
-  {
-    value: "動",
-    label: "動詞"
-  },
-  {
-    value: "形",
-    label: "形容詞"
-  },
-  {
-    value: "副",
-    label: "副詞"
-  }
-];
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -142,7 +124,7 @@ function App() {
                 <TextField
                   id="outlined-basic"
                   name="word"
-                  label="単語"
+                  label={config.form.label.word}
                   variant="outlined"
                   onChange={handleChange}
                   value={word}
@@ -155,13 +137,13 @@ function App() {
                   id="outlined-select-currency"
                   name="category"
                   select
-                  label="種類"
+                  label={config.form.label.category}
                   value={category}
                   onChange={handleChange}
                   variant="outlined"
                   required
                 >
-                  {categories.map(option => (
+                  {config.categories.map(option => (
                     <MenuItem key={option.value} value={option.value}>
                       {option.label}
                     </MenuItem>
@@ -173,7 +155,7 @@ function App() {
                 <TextField
                   id="outlined-basic"
                   name="mean"
-                  label="意味"
+                  label={config.form.label.mean}
                   variant="outlined"
                   onChange={handleChange}
                   value={mean}
@@ -185,7 +167,7 @@ function App() {
                 <TextField
                   id="outlined-multiline-static"
                   name="any"
-                  label="補足"
+                  label={config.form.label.any}
                   multiline
                   rows="4"
                   variant="outlined"
@@ -203,7 +185,7 @@ function App() {
                   variant="contained"
                   color="primary"
                 >
-                  単語を追加
+                  {config.message.add}
                 </Button>
               </Grid>
             </Grid>
@@ -215,13 +197,13 @@ function App() {
             onClose={handleClose}
           >
             <Alert onClose={handleClose} severity="success">
-              登録が完了しました
+              {config.message.success}
             </Alert>
           </Snackbar>
 
           <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
             <Alert onClose={handleClose} severity="error">
-              登録に失敗しました
+              {config.message.error}
             </Alert>
           </Snackbar>
         </Paper>
