@@ -2,7 +2,8 @@ import React from "react";
 import axios from "axios";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Grid, TextField, MenuItem, Button, Paper } from "@material-ui/core";
-import "./styles.css";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -44,7 +45,20 @@ const categories = [
   }
 ];
 
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 function App() {
+  const classes = useStyles();
+  const [word, setWord] = React.useState("");
+  const [category, setCategory] = React.useState("名");
+  const [mean, setMean] = React.useState("");
+  const [any, setAny] = React.useState("");
+  const [submitting, setSubmitting] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
+  const [error, setError] = React.useState(false);
+
   const addWord = async (
     word: string,
     category: string,
@@ -52,36 +66,42 @@ function App() {
     any: string
   ) => {
     try {
+      setSubmitting(true);
       const result = await axios.post(
         `http://localhost:1998/vocabulary?word=${word}&category=${category}&mean=${mean}&any=${any}`
       );
       console.log(result.data);
+      setSubmitting(false);
+      if (result.data.code === 200) {
+        clearForm();
+        setSuccess(true);
+      } else {
+        setError(true);
+      }
     } catch {
-      console.log("error!!");
+      console.log("axios error!!");
     }
   };
 
-  const classes = useStyles();
-  const [word, setWord] = React.useState("");
-  const [category, setCategory] = React.useState("名");
-  const [mean, setMean] = React.useState("");
-  const [any, setAny] = React.useState("");
+  const clearForm = () => {
+    setWord("");
+    setCategory("名");
+    setMean("");
+    setAny("");
+  };
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     switch (event.target.name) {
       case "word":
-        console.log(event.target.value);
         setWord(event.target.value);
         break;
       case "category":
-        console.log(event.target.value);
         setCategory(event.target.value);
         break;
       case "mean":
-        console.log(event.target.value);
         setMean(event.target.value);
         break;
       case "any":
-        console.log(event.target.value);
         setAny(event.target.value);
         break;
       default:
@@ -94,11 +114,24 @@ function App() {
     addWord(word, category, mean, any);
   };
 
+  const handleClose = () => {
+    if (success) {
+      setSuccess(false);
+    }
+    if (error) {
+      setError(false);
+    }
+  };
+
   return (
     <div className="App">
       <div>
         <Paper className={classes.paper}>
-          <form className={classes.root} onSubmit={handleSubmit}>
+          <form
+            className={classes.root}
+            onSubmit={handleSubmit}
+            autoComplete="off"
+          >
             <Grid
               container
               direction="column"
@@ -113,6 +146,7 @@ function App() {
                   variant="outlined"
                   onChange={handleChange}
                   value={word}
+                  required
                 />
               </Grid>
 
@@ -125,6 +159,7 @@ function App() {
                   value={category}
                   onChange={handleChange}
                   variant="outlined"
+                  required
                 >
                   {categories.map(option => (
                     <MenuItem key={option.value} value={option.value}>
@@ -142,6 +177,7 @@ function App() {
                   variant="outlined"
                   onChange={handleChange}
                   value={mean}
+                  required
                 />
               </Grid>
 
@@ -155,11 +191,13 @@ function App() {
                   variant="outlined"
                   onChange={handleChange}
                   value={any}
+                  required
                 />
               </Grid>
 
               <Grid item>
                 <Button
+                  disabled={submitting ? true : false}
                   type="submit"
                   size="medium"
                   variant="contained"
@@ -170,6 +208,22 @@ function App() {
               </Grid>
             </Grid>
           </form>
+
+          <Snackbar
+            open={success}
+            autoHideDuration={6000}
+            onClose={handleClose}
+          >
+            <Alert onClose={handleClose} severity="success">
+              登録が完了しました
+            </Alert>
+          </Snackbar>
+
+          <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="error">
+              登録に失敗しました
+            </Alert>
+          </Snackbar>
         </Paper>
       </div>
     </div>
