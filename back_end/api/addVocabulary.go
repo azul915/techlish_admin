@@ -50,7 +50,13 @@ func AddVocabulary(v *Vocabulary) (int, interface{}, error) {
 		writeRange := "シート1!A" + strconv.Itoa(newIdx)
 		valueRange := &sheets.ValueRange{
 			Values: [][]interface{}{
-				[]interface{}{v.Word, v.Category, v.Mean, v.Any, "1999/09/15 0:00:00"},
+				[]interface{}{
+					v.Word,
+					v.Category,
+					v.Mean,
+					v.Any,
+					"1999/09/15 0:00:00",
+				},
 			},
 		}
 
