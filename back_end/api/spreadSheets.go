@@ -14,6 +14,7 @@ import (
 )
 
 func saveToken(path string, token *oauth2.Token) {
+
 	fmt.Printf("Saving credential file to: %s\n", path)
 	f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
 	if err != nil {
@@ -43,6 +44,7 @@ func getTokenFromWeb(config *oauth2.Config) *oauth2.Token {
 }
 
 func tokenFromFile(file string) (*oauth2.Token, error) {
+
 	f, err := os.Open(file)
 	if err != nil {
 		return nil, err
