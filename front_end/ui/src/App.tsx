@@ -91,7 +91,7 @@ function App() {
     }
   };
 
-  const handleSubmit = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     addWord(word, category, mean, any);
   };
