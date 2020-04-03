@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -15,37 +16,14 @@ func handleAddVocabulary(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	r.ParseForm()
-
-	ws := r.Form["word"]
-	if ws == nil {
-		w.WriteHeader(http.StatusBadRequest)
-		log.Println("BadRequest: parameter[word] is empty")
+	jsonData, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Println("Error reading JSON data:", err)
 		return
 	}
 
-	cs := r.Form["category"]
-	if cs == nil {
-		w.WriteHeader(http.StatusBadRequest)
-		log.Println("BadRequest: parameter[category] is empty")
-		return
-	}
-
-	ms := r.Form["mean"]
-	if ms == nil {
-		w.WriteHeader(http.StatusBadRequest)
-		log.Println("BadRequest: parameter[mean] is empty")
-		return
-	}
-
-	as := r.Form["any"]
-
-	voc := vocabulary.Vocabulary{
-		Word:     ws[0],
-		Category: cs[0],
-		Mean:     ms[0],
-		Any:      as[0],
-	}
+	var voc vocabulary.Vocabulary
+	json.Unmarshal(jsonData, &voc)
 
 	_, res, err := vocabulary.AddVocabulary(&voc)
 	json, err := json.Marshal(res)

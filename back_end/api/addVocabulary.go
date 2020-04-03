@@ -11,10 +11,10 @@ import (
 )
 
 type Vocabulary struct {
-	Word      string
-	Category  string
-	Mean      string
-	Any       string
+	Word      string `json:"word"`
+	Category  string `json:"category"`
+	Mean      string `json:"mean"`
+	Any       string `json:"any"`
 	CreatedAt time.Time
 }
 
