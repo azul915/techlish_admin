@@ -1,6 +1,5 @@
 import React from "react";
 import { config } from "./config";
-import axios from "axios";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Grid, TextField, MenuItem, Button, Paper } from "@material-ui/core";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -47,21 +46,25 @@ function App() {
     mean: string,
     any: string
   ) => {
-    try {
-      setSubmitting(true);
-      const result = await axios.post(
-        `http://localhost:1998/vocabulary?word=${word}&category=${category}&mean=${mean}&any=${any}`
-      );
-      console.log(result.data);
-      setSubmitting(false);
-      if (result.data.code === 200) {
-        clearForm();
-        setSuccess(true);
-      } else {
-        setError(true);
-      }
-    } catch {
-      console.log("axios error!!");
+    setSubmitting(true);
+
+    const response = await fetch('http://localhost:1998/vocabulary', {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ word: word, category: category, mean: mean, any: any })
+    });
+    console.log(response.text);
+
+    setSubmitting(false);
+
+    if (response.ok) {
+      clearForm();
+      setSuccess(true);
+      alert('Your registration was successful.');
+    } else {
+      setError(true);
+      alert(`Error occured!! Status code ${response.status}`);
     }
   };
 

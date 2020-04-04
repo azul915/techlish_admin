@@ -22,3 +22,4 @@ services:
     volumes: 
       - ./front_end/ui/:/usr/src/ui
     working_dir: /usr/src/ui
+    command: sh -c "PORT=1997 yarn start"
