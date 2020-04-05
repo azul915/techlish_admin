@@ -48,24 +48,19 @@ function App() {
   ) => {
     setSubmitting(true);
 
-    const response = await fetch('http://localhost:1998/vocabulary', {
+    fetch('http://localhost:1998/vocabulary', {
       method: 'POST',
-      mode: 'cors',
-      headers: { 'Content-Type': 'application/json' },
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ word: word, category: category, mean: mean, any: any })
     });
-    console.log(response.text);
 
     setSubmitting(false);
+    clearForm();
+    setSuccess(true);
 
-    if (response.ok) {
-      clearForm();
-      setSuccess(true);
-      alert('Your registration was successful.');
-    } else {
-      setError(true);
-      alert(`Error occured!! Status code ${response.status}`);
-    }
   };
 
   const clearForm = () => {

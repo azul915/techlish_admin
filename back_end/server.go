@@ -10,7 +10,7 @@ import (
 )
 
 func handleAddVocabulary(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 
@@ -33,10 +33,10 @@ func handleAddVocabulary(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	log.Println(string(json))
 	w.Write(json)
+
 }
 
 func handleRequests() {
