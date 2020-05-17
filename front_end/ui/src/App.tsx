@@ -171,7 +171,6 @@ function App() {
                   variant="outlined"
                   onChange={handleChange}
                   value={any}
-                  required
                 />
               </Grid>
 
