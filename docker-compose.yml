@@ -30,7 +30,11 @@ services:
     image: node:15.5.0
     stdin_open: true
     tty: true
+    working_dir: /usr/src/ui
+    command: ["/bin/sh", "-c", "/usr/src/ui/node_modules/.bin/next -p 1997"]
+    ports:
+      - 1997:1997
     volumes:
       - ./r_front_end/ui:/usr/src/ui
-    working_dir: /usr/src/ui
-    command: ["/bin/sh", "-c", "tail -f /dev/null"]
+    links:
+      - api
