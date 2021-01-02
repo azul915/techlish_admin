@@ -30,7 +30,7 @@ function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-function App() {
+function Home() {
   const classes = useStyles();
   const [word, setWord] = React.useState("");
   const [category, setCategory] = React.useState("名");
@@ -209,4 +209,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;

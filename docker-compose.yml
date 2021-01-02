@@ -16,17 +16,7 @@ services:
       - ./back_end/credentials.json:/go/src/credentials.json
       - ./back_end/.air.toml:/go/src/.air.toml
       - ./back_end/api/:/go/src/api
-  # ui:
-  #   image: node:13.8.0
-  #   stdin_open: true
-  #   tty: true
-  #   ports:
-  #     - 1997:1997
-  #   volumes:
-  #     - ./front_end/ui/:/usr/src/ui
-  #   working_dir: /usr/src/ui
-  #   command: sh -c "PORT=1997 yarn start"
-  next:
+  ui:
     image: node:15.5.0
     stdin_open: true
     tty: true
@@ -35,6 +25,6 @@ services:
     ports:
       - 1997:1997
     volumes:
-      - ./r_front_end/ui:/usr/src/ui
+      - ./front_end/ui:/usr/src/ui
     links:
       - api
